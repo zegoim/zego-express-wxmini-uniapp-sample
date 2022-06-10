@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "基础推拉流——组件",
-  "usingComponents": {
-    "zego-pusher": "/components/zego-pusher/zego-pusher",
-    "zego-player": "/components/zego-player/zego-player",
-    "setting-camera-record": "/components/setting-camera-record/setting-camera-record"
-  }
-}
