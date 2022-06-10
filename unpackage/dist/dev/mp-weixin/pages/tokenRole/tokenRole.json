@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "token鉴权",
+  "usingComponents": {
+    "setting-camera-record": "/components/setting-camera-record/setting-camera-record"
+  }
+}

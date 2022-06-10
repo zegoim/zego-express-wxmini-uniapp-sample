@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "基础推拉流",
+  "usingComponents": {
+    "setting-camera-record": "/components/setting-camera-record/setting-camera-record"
+  }
+}

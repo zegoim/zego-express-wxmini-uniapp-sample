@@ -1,0 +1,36 @@
+input,textarea{
+    padding: 8rpx;
+    border: 1px solid $border-color;
+    border-radius: 4rpx;
+    line-height: 48rpx;
+    margin: 20rpx;
+    border-radius: 4rpx;
+}
+textarea {
+    width: auto;
+}
+live-pusher,live-player{
+    width: 45%;
+    height: 400rpx;
+    margin: 4rpx;
+}
+button {
+    display: inline-block;
+    font-size: 28rpx;
+    margin: 10rpx;
+    padding: 10rpx;
+    color: #fff;
+    border: none;
+    min-width: 120rpx;
+    background-color: rgba(13, 112, 255, 0.7);
+}
+.page-content{
+    padding: 10rpx;
+    box-sizing: border-box;
+    .containerBase{
+        min-height: 440rpx;
+    }
+    .logout-room{
+        display: block;
+    }
+}

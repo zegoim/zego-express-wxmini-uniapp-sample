@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "zego-express-engine-miniprogram": "^2.10.4"
+  }
+}

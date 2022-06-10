@@ -1,0 +1,91 @@
+{
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "ZEGO Express uniapp-wx"
+			}
+		},
+		{
+			"path": "pages/base/base",
+			"style": {
+				"navigationBarTitleText": "基础推拉流"
+			}
+		},
+		{
+			"path": "pages/base_zego/base_zego",
+			"style": {
+				"navigationBarTitleText": "基础推拉流——组件"
+			}
+		},
+		{
+			"path": "pages/cdn/cdn",
+			"style": {
+				"navigationBarTitleText": "ZEGO Express"
+			}
+		},
+		{
+			"path": "pages/bgm/bgm",
+			"style": {
+				"navigationBarTitleText": "ZEGO Express"
+			}
+		},
+		{
+			"path": "pages/customlive/customlive",
+			"style": {
+				"navigationBarTitleText": "自定义推拉流"
+			}
+		},
+		{
+			"path": "pages/message/message",
+			"style": {
+				"navigationBarTitleText": "实时消息"
+			}
+		},
+		{
+			"path": "pages/mix/mix",
+			"style": {
+				"navigationBarTitleText": "混流"
+			}
+		},
+		{
+			"path": "pages/native/native",
+			"style": {
+				"navigationBarTitleText": "摄像头、麦克风等"
+			}
+		},
+		{
+			"path": "pages/setting/setting",
+			"style": {
+				"navigationBarTitleText": "自定义设置"
+			}
+		},
+		{
+			"path": "pages/snapshot/snapshot",
+			"style": {
+				"navigationBarTitleText": "截图"
+			}
+		},
+		{
+			"path": "pages/multi/multi",
+			"style": {
+				"navigationBarTitleText": "多节点"
+			}
+		},
+		{
+			"path": "pages/tokenRole/tokenRole",
+			"style": {
+				"navigationBarTitleText": "token鉴权"
+			}
+		}
+	],
+	"globalStyle": {
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#e0edf9",
+		"navigationBarTitleText": "ZEGO Express",
+		"navigationBarTextStyle": "black"
+	},
+	"easycom": {
+		"autoscan": true
+	}
+}

@@ -1,0 +1,1 @@
+<view class="settings"><block wx:if="{{canShow==0}}"><button open-type="openSetting" data-event-opts="{{[['opensetting',[['settingCallback',['$event']]]]]}}" bindopensetting="__e">授权使用摄像头和麦克风</button></block></view>

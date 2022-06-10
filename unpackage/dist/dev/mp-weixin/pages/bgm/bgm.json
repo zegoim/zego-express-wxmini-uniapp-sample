@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "ZEGO Express",
+  "usingComponents": {
+    "setting-camera-record": "/components/setting-camera-record/setting-camera-record"
+  }
+}
