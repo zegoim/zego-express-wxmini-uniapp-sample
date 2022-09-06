@@ -35,7 +35,7 @@ export const initSDK = (context, pushAtr, playAtr) => {
           // 更新，并渲染组件列表
           context.zegoPlayerList = context.zegoPlayerList
           // 在zegoPlayerList更新后， 将zg实例传入对应的流id的组件内
-          context.nextTick(()=>{
+          context.nextTick(async ()=>{
             const zegoPlayer = context.selectComponent(`#${zegoPlayerAttr.componentID}`).$vm || context.selectComponent(`#${zegoPlayerAttr.componentID}`)
             if (!zegoPlayer) return uni.showToast({ icon: "none", title: "未能获取到组件节点" })
             // 开始播放
