@@ -35,10 +35,12 @@ export const initSDK = (context, pushAtr, playAtr) => {
           // 更新，并渲染组件列表
           context.zegoPlayerList = context.zegoPlayerList
           // 在zegoPlayerList更新后， 将zg实例传入对应的流id的组件内
-          const zegoPlayer = context.selectComponent(`#${zegoPlayerAttr.componentID}`)
-          if (!zegoPlayer) return uni.showToast({ icon: "none", title: "未能获取到组件节点" })
-          // 开始播放
-          await zegoPlayer.startPlay(zg, streamList[i].streamID)
+          context.nextTick(()=>{
+            const zegoPlayer = context.selectComponent(`#${zegoPlayerAttr.componentID}`).$vm || context.selectComponent(`#${zegoPlayerAttr.componentID}`)
+            if (!zegoPlayer) return uni.showToast({ icon: "none", title: "未能获取到组件节点" })
+            // 开始播放
+            await zegoPlayer.startPlay(zg, streamList[i].streamID)
+          })
         } catch (error) {
           console.error("playStream error", error)
         }
