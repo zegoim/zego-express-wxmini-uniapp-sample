@@ -11,7 +11,7 @@
 <script>
 export default {
     props: {
-        playerList: {
+        player:{
             type: Object,
             default: () => ({})
         },
@@ -20,19 +20,13 @@ export default {
         },
         instance: Object
     },
-    computed: {
-        player() {
-            // 过滤出列表中属于当前组件的 live-player
-            return this.playerList.find(item => item.id === this.playerId) || {}
-        }
-    },
     methods: {
         async startPlay(zegoExpressEngineInstance, streamID) {
             try {
                 // 获取页面上的zego实例
                 this.zgInstance = zegoExpressEngineInstance
                 // 等待 getPlayerInstance 创建 live-player的上下文后，将组件内的this绑定到 player的上下文上。
-                const res = (await zgInstance.getPlayerInstance(streamID)).play()
+                const res = (await this.zgInstance.getPlayerInstance(streamID)).play()
                 console.log("startPlay res", res)
             } catch (error) {
                 console.error("error in startPlay ", error)

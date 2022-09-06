@@ -5,7 +5,7 @@
                 <view class="containerBase">
                     <zego-pusher id="zegoPusher" :pusher="pusher" />
                     <zego-player v-for="item in zegoPlayerList" :key="id" :id="item.componentID"
-                        :playerId="item.playerId" :playerList="playerList" />
+                        :playerId="item.playerId" :playerList="zegoPlayerList" />
                 </view>
                 <view class="index-container">
                     <view class='input-container'>
