@@ -16,7 +16,6 @@ export const initSDK = (context) => {
 
         // console.log(this);
         zg.on("roomStreamUpdate", (roomID, updateType, streamList) => {
-                debugger
                 console.log("roomStreamUpdate", roomID, updateType, streamList);
                 if (updateType === "ADD") {
                         context.streamList = streamList
