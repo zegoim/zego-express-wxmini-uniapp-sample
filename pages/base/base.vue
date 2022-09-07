@@ -52,6 +52,7 @@ import {
     authCheck,
     startPush,
 } from '../../utils/common';
+import { getLoginToken } from '../../utils/server';
 import commonMixin from '../../mixin/common-mixin'
 import { ZegoExpressEngine } from "zego-express-engine-miniprogram";
 let { zegoAppID, server } = getApp().globalData
@@ -94,20 +95,20 @@ export default {
         },
         //  //切换拉流
         async switchPullStream() {
-            // const zg2 = new ZegoExpressEngine(zegoAppID, server)
-            // const token = await getLoginToken(zegoAppID, 'test002');
-            // // 登录房间，成功则返回 true
-            // const result = await zg2.loginRoom(this.roomID, token, {
-            //     userID: 'test002', // userID，需用户自己定义，保证全局唯一，建议设置为业务系统中的用户唯一标识
-            //     userName: 'test002' // userName 用户名
-            // }, {
-            //     userUpdate: true // 是否接收用户进出房间的回调，设置为 true 才能接收到房间内其他用户进出房间的回调
-            // });
-            // const reslult = await zg2.startPlayingStream(
-            //     this.pushStreamID, {
-            //     sourceType: "BGP"
-            // })
-            // this.livePlayerList.push(reslult)
+            const zg2 = new ZegoExpressEngine(zegoAppID, server)
+            const token = await getLoginToken(zegoAppID, 'test002');
+            // 登录房间，成功则返回 true
+            const result = await zg2.loginRoom(this.roomID, token, {
+                userID: 'test002', // userID，需用户自己定义，保证全局唯一，建议设置为业务系统中的用户唯一标识
+                userName: 'test002' // userName 用户名
+            }, {
+                userUpdate: true // 是否接收用户进出房间的回调，设置为 true 才能接收到房间内其他用户进出房间的回调
+            });
+            const reslult = await zg2.startPlayingStream(
+                this.pushStreamID, {
+                sourceType: "BGP"
+            })
+            this.livePlayerList.push(reslult)
         },
         audiovolumenotify(e) {
             console.log('===========')
