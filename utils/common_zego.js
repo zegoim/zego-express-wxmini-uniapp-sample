@@ -21,7 +21,7 @@ export const initSDK = (context, pushAtr, playAtr) => {
 
   // console.log(this);
   zg.on("roomStreamUpdate", async (roomID, updateType, streamList) => {
-    console.error("roomStreamUpdate", roomID, updateType, streamList);
+    console.warn("roomStreamUpdate", roomID, updateType, streamList);
     if (updateType === "ADD") {
       for (let i = 0; i < streamList.length; i++) {
         try {
@@ -81,7 +81,7 @@ export const initSDK = (context, pushAtr, playAtr) => {
     }
   })
   zg.on("publisherStateUpdate", (result) => {
-    console.error("publishStateUpdate", result)
+    console.warn("publishStateUpdate", result)
   })
   zg.on("playerStateUpdate", (result) => {
     console.log("playStateUpdate", result)
@@ -93,13 +93,13 @@ export const initSDK = (context, pushAtr, playAtr) => {
     console.log("playQualityUpdate", streamID, playStats)
   })
   zg.on("roomOnlineUserCountUpdate", (roomID, userCount) => {
-    console.error("roomOnlineUserCountUpdate", roomID, userCount)
+    console.warn("roomOnlineUserCountUpdate", roomID, userCount)
   })
   zg.on("recvReliableMessage", (roomID, userCount, trans_type) => {
-    console.error("recvReliableMessage", roomID, userCount, trans_type)
+    console.warn("recvReliableMessage", roomID, userCount, trans_type)
   })
   zg.on("tokenWillExpire", (roomID) => {
-    console.error("tokenWillExpire", roomID)
+    console.warn("tokenWillExpire", roomID)
   })
 
   return zg
