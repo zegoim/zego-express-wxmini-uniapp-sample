@@ -2,8 +2,7 @@
  * 将公用逻辑抽离出来
  *
 */
-import { getLoginToken } from '../utils/server';
-let { zegoAppID, server } = getApp().globalData
+let { userID } = getApp().globalData
 
 export default {
     data() {
@@ -13,7 +12,7 @@ export default {
             pushStreamID: 'xcx-streamID-' + new Date().getTime(), // 推流ID
             livePusherUrl: '', // 推流地址
             livePusher: null, // live-pusher 的 Context，内部只有一个对象
-            userID: 'xcx-userID-' + new Date().getTime(), // 用户ID,
+            userID: userID, // 用户ID,
             livePlayerList: [],
             connectType: -1, // 房间连接状态：-1为初始状态，1为连接，0断开连接
             canShow: -1,
@@ -34,7 +33,9 @@ export default {
         this.onNetworkStatus();
     },
     async mounted() {
-        this.token = await getLoginToken(zegoAppID, this.userID);
+        let {  token, userID} = getApp().globalData
+        this.token = token;
+        this.userID = userID
     },
     methods: {
         async openRoom(e) {

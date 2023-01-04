@@ -81,8 +81,8 @@ export default {
         }
         this._zg = zg // _zg不监听，监听会报错
         // 刷新全局变量
-        zegoAppID = getApp().globalData.zegoAppID;
-        server = getApp().globalData.server;
+        zegoAppID = zegoAppID;
+        server = server;
     },
     methods: {
         async sendMsg() {

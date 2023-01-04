@@ -99,6 +99,14 @@ export default {
 		console.log('onShareAppMessage');
 		return sharePage();
 	},
+	onLoad() {
+		const { zegoAppID, server, userID, token } = getApp().globalData;
+		if(!zegoAppID || !server || !userID || !token) {
+			uni.navigateTo({
+				url: "../setting/setting"
+			});
+		}
+	},
 	methods: {
 		onEntryTap(e) {
 			// 防止两次点击操作间隔太快

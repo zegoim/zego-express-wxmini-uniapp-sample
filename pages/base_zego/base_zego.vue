@@ -45,16 +45,14 @@
 
 <script>
 import {
-    getLoginToken
-} from '../../utils/server';
-import {
     initSDK,
     authCheck,
     startPush,
 } from '../../utils/common_zego';
 let {
     zegoAppID,
-    server
+    server,
+    userID
 } = getApp().globalData;
 let zg
 export default {
@@ -62,7 +60,7 @@ export default {
         return {
             roomID: '001',
             pushStreamID: 'xcx-streamID-' + new Date().getTime(), // 推流ID
-            userID: 'xcx-userID-' + new Date().getTime(), // 用户ID,
+            userID: userID, // 用户ID,
             livePlayerList: [],
             connectType: -1, // -1为初始状态，1为连接，0断开连接
             canShow: -1,
@@ -93,8 +91,10 @@ export default {
             // this.reLogin();
         }
         // 刷新全局变量
-        zegoAppID = getApp().globalData.zegoAppID;
-        server = getApp().globalData.server;
+        let { zegoAppID, server, userID } = getApp().globalData;
+        zegoAppID = zegoAppID;
+        server = server;
+        this.userID = userID
 
     },
     onHide() {
@@ -123,7 +123,8 @@ export default {
                 console.log(this)
                 try {
                     /** 获取token */
-                    const token = await getLoginToken(zegoAppID, this.userID);
+                    const token = getApp().globalData.token;
+                    console.warn(token, getApp().globalData)
                     /** 开始登录房间 */
                     let isLogin = await zg.loginRoom(this.roomID, token, {
                         userID: this.userID,
@@ -183,7 +184,7 @@ export default {
             try {
                 await zg.logoutRoom();
                 // this.livePusher && (this.livePusher! as wx.LivePusherContext).stop();
-                let token = await getLoginToken(zegoAppID, this.userID);
+                let token = getApp().globalData.token;
                 if (!token) {
                     console.error("获取token 失败");
                     this.reLogin();

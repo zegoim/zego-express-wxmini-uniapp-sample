@@ -4,11 +4,19 @@
 
             <view class="items">
                 <label>appID:</label>
-                <input disabled v-model="_appID" data-name="appID" />
+                <input v-model="appID" />
             </view>
             <view class="items">
                 <label>serverURL:</label>
-                <input disabled v-model="_serverURL" data-name="serverURL" />
+                <input v-model="serverURL"  />
+            </view>
+            <view class="items">
+                <label>userID:</label>
+                <input v-model="userID"  />
+            </view>
+            <view class="items">
+                <label>token:</label>
+                <textarea v-model="token" maxlength="10000"></textarea>
             </view>
 
         </view>
@@ -23,41 +31,56 @@
 </template>
 
 <script>
-let globalData = getApp().globalData;
-let { zegoAppID, server, cgi_token } = globalData;
 export default {
     data() {
         return {
-            _appID: zegoAppID,
-            _serverURL: server
+            appID: '',
+            serverURL: '',
+            userID: '',
+            token: '',
         }
+    },
+    onShow() {
+        this.init()
     },
     methods: {
         async submit() {
-            if (this._appID !== zegoAppID ||
-                this._cgi_token != cgi_token ||
-                this._serverURL !== server) {
-                const res = await uni.showModal({
+            let { zegoAppID, server, userID, token } = getApp().globalData;
+            if (this.appID !== zegoAppID ||
+                this.token != token ||
+                this.userID != userID ||
+                this.serverURL !== server) {
+                const _this = this;
+                uni.showModal({
                     title: '',
                     content: '确定要修改么？',
+                    success(data) {
+                        if(data.cancel) return uni.navigateBack({ delta: 1 });
+                        getApp().globalData.zegoAppID = _this.appID * 1;
+                        getApp().globalData.server = _this.serverURL;
+                        getApp().globalData.token = _this.token;
+                        getApp().globalData.userID = _this.userID;
+                        uni.setStorage({
+                            key: 'globalData',
+                            data: getApp().globalData
+                        })
+                        uni.navigateBack({ delta: 1 })
+                    }
                 })
-                if (res.confirm) {
-                    globalData.zegoAppID = this._appID * 1;
-                    console.log('zegoAppID', globalData.zegoAppID);
-                    globalData.server = this._serverURL;
-                    globalData.cgi_token = this._cgi_token;
-                    uni.navigateBack({ delta: 1 });
-                }
             } else {
-                uni.navigateBack({ delta: 1 });
+                uni.navigateBack({ delta: 1 })
             }
         },
+        init() {
+            let globalData = getApp().globalData;
+            let { zegoAppID, server, userID, token } = globalData;
+            this.appID = zegoAppID;
+            this.serverURL = server;
+            this.userID = userID;
+            this.token = token;
+        },
         reset() {
-
-            globalData.zegoAppID = 1739272706;
-            // globalData.tokenURL = "https://wsliveroom-alpha.zego.im:8282/token";
-            globalData.server = "wss://webliveroom-test.zego.im/ws";
-
+            this.init()
             uni.navigateBack({ delta: 1 });
         },
         async scanQR() {
@@ -65,10 +88,11 @@ export default {
                 const { result, scanType } = await uni.scanCode({})
                 console.log(result, scanType)
                 if (scanType === "QR_CODE") {
-                    let { appid, server, cgi_token } = JSON.parse(result);
-                    this._appID = appid ? appid : this._appID
-                    this._serverURL = server ? server : this._serverURL
-                    this._cgi_token = cgi_token,
+                    let { appid, server, token, userid } = JSON.parse(result);
+                    this.appID = appid ? appid : this.appID
+                    this.serverURL = server ? server : this.serverURL
+                    this.token = token;
+                    this.userID = userid;
                         this.useQR = 1;
                 } else {
                     console.error('扫描的不是二维码')
