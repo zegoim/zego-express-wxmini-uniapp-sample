@@ -17,12 +17,13 @@ export default {
             connectType: -1, // 房间连接状态：-1为初始状态，1为连接，0断开连接
             canShow: -1,
             handupStop: false,
-            role: '',
-            roomUserList: []
+            role: undefined,
+            roomUserList: [],
+            isReLoginging: false
         }
     },
     onHide() {
-        this.logout();
+        // this.logout();
     },
     onUnload() {
         this.logout();
@@ -38,7 +39,7 @@ export default {
         this.userID = userID
     },
     methods: {
-        async openRoom(e) {
+        async openRoom(e, force) {
             if (!this.roomID) {
                 uni.showModal({
                     title: '提示',
@@ -47,8 +48,9 @@ export default {
                 });
                 return;
             }
-            const role = typeof e === 'string' ? e : e.target.dataset && e.target.dataset.role;
-            if (this.connectType !== 1) {
+            const role = parseInt(typeof e === 'number' ? e : e.target.dataset && e.target.dataset.role);
+            // console.warn("登录房间", this.connectType , role, force)
+            if (force || this.connectType !== 1) {
                 // 登录房间，成功则返回 true
                 const result = await this._zg.loginRoom(this.roomID, this.token, {
                     userID: this.userID, // userID，需用户自己定义，保证全局唯一，建议设置为业务系统中的用户唯一标识
@@ -56,10 +58,11 @@ export default {
                 }, {
                     userUpdate: true // 是否接收用户进出房间的回调，设置为 true 才能接收到房间内其他用户进出房间的回调
                 });
-                if (result) this.connectType = 1
+                this.connectType = 1
             }
-            if (role === '1') {
-                this.role = role
+            this.role = role
+            if (role === 1) {
+                // console.warn("开始推流", this.connectType , role, force)
                 this.startPush()
             }
         },
@@ -102,27 +105,28 @@ export default {
                 this.stopPull(this._zg)
                 /** 登出房间 */
                 if (this._zg && this.connectType === 1) await this._zg.logoutRoom(this.roomID);
-                this.connectType = 0
             } catch (error) {
                 console.error('error: ', error);
             }
 
         },
         async reLogin() {
+            console.warn("重新登录 role", this.role, this.isReLoginging)
+            if (this.isReLoginging) return;
+            this.isReLoginging = true;
             try {
-                await this._zg.logoutRoom(this.roomID);
-                this.connectType = 0
-                this.openRoom(this.role)
+                await this.logout(this.roomID);
+                await this.openRoom(this.role, true)
             } catch (error) {
                 console.error('error: ', error);
             }
+            this.isReLoginging = false;
         },
         onNetworkStatus() {
             wx.offNetworkStatusChange()
             uni.onNetworkStatusChange(res => {
+                // console.warn("网络变化",res.isConnected, this.roomID, this.connectType)
                 if (res.isConnected && this.connectType === 1 && this._zg) {
-                    console.warn('data', this);
-                    console.warn('roomID', this.roomID);
                     this.reLogin();
 
                 }

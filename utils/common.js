@@ -49,10 +49,13 @@ export const initSDK = (context) => {
                 }
                 context.roomUserList = roomUserList
         });
+
         zg.on("roomStateUpdate", (roomID, state, errorCode, extendedData) => {
-                console.log("roomStateUpdate", roomID, state, errorCode, extendedData);
+                console.warn("roomStateUpdate", roomID, state, errorCode, extendedData);
                 if (state === "DISCONNECTED") {
                         context.connectType = 0
+                } else if (state === "CONNECTED") {
+                        context.connectType = 1;
                 }
         });
         zg.on("publisherStateUpdate", (result) => {

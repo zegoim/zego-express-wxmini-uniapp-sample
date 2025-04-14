@@ -35,6 +35,7 @@ import { ZegoExpressEngine } from '../libs/ZegoExpressMiniProgram-x.x.x';
 ```
 import { ZegoExpressEngine } from "zego-express-engine-miniprogram"; // 以npm的方式引用
 ```
+
 4. 运行小程序
 ![guide_4.png](/static/guide_4.png)
 5. 关于HBuilderX配置微信开发者工具路径，在运行设置里面的微信开发者工具路径中输入微信开发者工具的软件安装位置
@@ -50,18 +51,19 @@ import { ZegoExpressEngine } from "zego-express-engine-miniprogram"; // 以npm�
 
 #### 可能会出现的问题
 1. 调用uni.authorize 失败且无失败码，请查看小程序appId是否为游客模式，游客模式有些api调用不了。
-2. 需要在main.js 添加以下代码，uniapp实例对象没有setData，没有加的话，会报错。
+2. 需要在main.js 添加以下代码来兼容 SDK 中对 setData 的调用。
 ```
 // 针对小程序setData方法判断
-Vue.prototype.setData = Vue.prototype.setData || function () {
-  const data = arguments[0] || {}
-  for(let key in data) {
+Vue.prototype.setData = Vue.prototype.setData || function (data = {}, callback) {
+  for (let key in data) {
+    this[key] = undefined
     this[key] = data[key]
   }
+  callback && this.$nextTick(callback)
 }
 ```
-3. 由于ZegoExpressEngine的示例对象过于复杂，若利用vue进行数据监听ZegoExpressEngine的实例的话，会出现深拷贝报错，因为uniapp里面用的
-JSON.stringify()无法处理所有数据类型，会报错，建议是不监听，且没必要监听，建议是直接赋值到实例对象的属性上，如`this._zg = new ZegoExpressEngine(appID, server)`
+3. 由于 ZegoExpressEngine 的实例对象过于复杂，若利用vue 对 ZegoExpressEngine 的实例进行响应式处理的话，会出现深拷贝报错，因为uniapp里面用的
+JSON.stringify()无法处理所有数据类型，会报错，要避免 ZegoExpressEngine 引擎实例对象被响应式处理，建议是直接赋值到实例对象的属性上，如 `this._zg = new ZegoExpressEngine(appID, server)`
 
 ```
   data() {
@@ -70,8 +72,8 @@ JSON.stringify()无法处理所有数据类型，会报错，建议是不监听�
         }
     },
     async onReady() {
-        this._zg = ZegoExpressEngine(zegoAppID, server) // _zg不监听，监听会报错，建议使用这种方式
-        this.zegoEG = ZegoExpressEngine(zegoAppID, server) // zegoEG近行数据监听，会报错，报错可能如下图
+        this._zg = new ZegoExpressEngine(zegoAppID, server) //  data 中没有定义_zg，_zg 不会被响应式处理。
+        this.zegoEG = new ZegoExpressEngine(zegoAppID, server) // zegoEG 会被响应式处理，会报错，报错可能如下图。
     }
 ```
 ![error.png](/static/error_example.png)

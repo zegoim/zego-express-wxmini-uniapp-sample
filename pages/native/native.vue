@@ -99,9 +99,9 @@ export default {
     onShow() {
         console.log('server: ', server);
         authCheck(this);
-        if (zg && this.roomID) {
-            this.reLogin();
-        }
+        // if (zg && this.roomID) {
+        //     this.reLogin();
+        // }
         this._zg = zg // _zg不监听，监听会报错
         // 刷新全局变量
         zegoAppID = getApp().globalData.zegoAppID;
@@ -140,7 +140,7 @@ export default {
         },
         // 画面方向
         toggleOrientation() {
-            this.pushConfig.orientation = this.data.pushConfig.orientation === 'vertical' ? 'horizontal' : 'vertical'
+            this.pushConfig.orientation = this.pushConfig.orientation === 'vertical' ? 'horizontal' : 'vertical'
         },
         // 日志
         showLog() {

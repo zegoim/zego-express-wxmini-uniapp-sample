@@ -4,21 +4,22 @@ import App from './App'
 import Vue from 'vue'
 
 // 针对小程序setData方法判断
-Vue.prototype.setData = Vue.prototype.setData || function () {
-  const data = arguments[0] || {}
-  for(let key in data) {
-    this[key] = null
-    setTimeout(()=>{
-      this[key] = data[key]
-    console.log(111111, data[key])
-    }, 0)
+// // 针对小程序setData方法判断
+Vue.prototype.setData = Vue.prototype.setData || function (data = {}, callback) {
+  for (let key in data) {
+    this[key] = undefined
+    this[key] = data[key]
   }
+  callback && this.$nextTick(callback)
 }
+
+
+
 import './common.scss'
 Vue.config.productionTip = false
 App.mpType = 'app'
 const app = new Vue({
-    ...App
+  ...App
 })
 app.$mount()
 // #endif

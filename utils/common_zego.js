@@ -35,7 +35,7 @@ export const initSDK = (context, pushAtr, playAtr) => {
           // 更新，并渲染组件列表
           context.zegoPlayerList = context.zegoPlayerList
           // 在zegoPlayerList更新后， 将zg实例传入对应的流id的组件内
-          context.$nextTick(async ()=>{
+          context.$nextTick(async () => {
             const zegoPlayer = context.selectComponent(`#${zegoPlayerAttr.componentID}`).$vm || context.selectComponent(`#${zegoPlayerAttr.componentID}`)
             if (!zegoPlayer) return uni.showToast({ icon: "none", title: "未能获取到组件节点" })
             // 开始播放
@@ -75,11 +75,13 @@ export const initSDK = (context, pushAtr, playAtr) => {
     context.roomUserList = roomUserList
   })
   zg.on("roomStateUpdate", (roomID, state, errorCode, extendedData) => {
-    console.warn("roomStateUpdate", roomID, state, errorCode, extendedData)
+    console.warn("roomStateUpdate", roomID, state, errorCode, extendedData);
     if (state === "DISCONNECTED") {
       context.connectType = 0
+    } else if (state === "CONNECTED") {
+      context.connectType = 1;
     }
-  })
+  });
   zg.on("publisherStateUpdate", (result) => {
     console.warn("publishStateUpdate", result)
   })
@@ -204,7 +206,7 @@ export const authCheck = async (context) => {
   try {
     result = await zg.checkSystemRequirements()
   } catch (error) {
-    
+
   }
   console.log("checkSystemRequirements", result)
   if (result && result.code === 10001) {
@@ -215,7 +217,7 @@ export const authCheck = async (context) => {
       showCancel: false
     })
     context.canShow = 0
-  } else if ( !result || result.code === 10002) {
+  } else if (!result || result.code === 10002) {
     console.log("result ", result && result.code)
     let hasCamera = false
     let hasRecord = false

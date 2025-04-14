@@ -4,7 +4,7 @@
             <view>
                 <view class="containerBase">
                     <zego-pusher id="zegoPusher" :pusher="pusher" />
-                    <zego-player v-for="item in zegoPlayerList" :key="id" :id="item.componentID"
+                    <zego-player v-for="item in zegoPlayerList" :key="item.playerId" :id="item.componentID"
                         :playerId="item.playerId" :playerList="playerList" />
                 </view>
                 <view class="index-container">
@@ -87,9 +87,9 @@ export default {
         authCheck(this);
         // 初始化 zego-player列表
         this.zegoPlayerList = []
-        if (zg && this.roomID) {
-            // this.reLogin();
-        }
+        // if (zg && this.roomID) {
+        //     this.reLogin();
+        // }
         // 刷新全局变量
         let { zegoAppID, server, userID } = getApp().globalData;
         zegoAppID = zegoAppID;
@@ -98,7 +98,7 @@ export default {
 
     },
     onHide() {
-        this.logout();
+        // this.logout();
     },
     onUnload() {
         this.logout();
@@ -110,7 +110,6 @@ export default {
     },
     methods: {
         async openRoom(e) {
-            console.log(this)
             if (!this.roomID) {
                 uni.showModal({
                     title: '提示',
@@ -120,7 +119,6 @@ export default {
                 return;
             }
             if (this.connectType !== 1) {
-                console.log(this)
                 try {
                     /** 获取token */
                     const token = getApp().globalData.token;
@@ -133,14 +131,13 @@ export default {
                         userUpdate: true
                     });
                     isLogin ? console.log('login success') : console.error('login fail');
-                    this.connectType = 1
                     // zg.setCustomSignalUrl([`rtmp://120.77.40.218/zegostg/${this.pushStreamID}`]); //wss://webrtctest.zego.im/ws?a=webrtc-demo
                 } catch (error) {
                     console.error('error: ', error);
                     return;
                 }
             }
-            // 创建房间，开始推流
+            // // 创建房间，开始推流
             if (e.target.dataset && e.target.dataset.role == 1) {
                 let config = { mode: "SD" };
                 if (e.target.dataset.option == "video") {
@@ -169,6 +166,7 @@ export default {
                     zegoPlayerList: []
                 })
                 /** 登出房间 */
+                // console.error("登出房间",zg, this.connectType)
                 if (zg && this.connectType === 1) await zg.logoutRoom();
             } catch (error) {
                 console.error('error: ', error);
@@ -176,13 +174,13 @@ export default {
 
         },
         //  //切换拉流
-        async reLogin() {
-            console.error("重新登录")
+        async reLogin() { 
+            console.warn("重新登录 role", this.role, this.isReLoginging)
 
             if (this.isReLoginging) return;
             this.isReLoginging = true;
             try {
-                await zg.logoutRoom();
+                await this.logout()
                 // this.livePusher && (this.livePusher! as wx.LivePusherContext).stop();
                 let token = getApp().globalData.token;
                 if (!token) {
@@ -197,7 +195,6 @@ export default {
                     userName: 'nick' + this.userID
                 });
                 isLogin ? console.log('login success') : console.error('login fail');
-                this.connectType = 1;
                 //console.log('pushStream: ', this.pushStreamID, this.livePusherUrl, this.role);
                 if (this.role == 1) {
                     startPush(this.pushStreamID, undefined, this.config)
@@ -224,9 +221,8 @@ export default {
         },
         onNetworkStatus() {
             uni.onNetworkStatusChange(res => {
+                console.warn("网络变化",res.isConnected, this.roomID, this.connectType)
                 if (res.isConnected && this.connectType === 1 && zg) {
-                    console.warn('data', this.data);
-                    console.warn('roomID', this.roomID);
                     this.reLogin();
                 }
             })

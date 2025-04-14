@@ -10,8 +10,7 @@
         :audio-quality="pusher.audioQuality" :audio-volume-type="pusher.audioVolumeType"
         :audio-reverb-type="pusher.audioReverbType" :waiting-image="pusher.waitingImage"
         :beauty-style="pusher.beautyStyle" :filter="pusher.filter" @statechange="onPushStateChange"
-        @audiovolumenotify="bindaudiovolumenotify" @netstatus="onPushNetStateChange"
-        waiting-image="https://storage.zego.im/downloads/pause_publish.png" />
+        @audiovolumenotify="bindaudiovolumenotify" @netstatus="onPushNetStateChange"/>
 </template>
 
 <script>
@@ -28,11 +27,11 @@ export default {
 
         };
     },
-    watch: {
-        pusher(newData) {
-            console.log('pusher update:', newData)
-        }
-    },
+    // watch: {
+    //     pusher(newData) {
+    //         console.log('pusher update:', JSON.stringify(newData))
+    //     }
+    // },
     methods: {
         async startPush(zegoExpressEngineInstance, pushStreamID, publishOption, config) {
             try {
@@ -43,7 +42,7 @@ export default {
                 // 设置属性
                 zegoExpressEngineInstance.zegoWechatMini.setPusherAttributes(config)
                 // 开始推流
-                const res = (await zegoExpressEngineInstance.getPusherInstance()).start(pushStreamID, publishOption)
+                const res = await (await zegoExpressEngineInstance.getPusherInstance()).start(pushStreamID, publishOption)
                 console.log("startPush res", res);    
 
             } catch (error) {

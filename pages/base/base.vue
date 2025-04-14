@@ -76,9 +76,9 @@ export default {
     onShow() {
         console.log('onShow: ', this.handupStop, this.connectType, server);
         authCheck(this);
-        if (zg && this.roomID) {
-            this.reLogin();
-        }
+        // if (zg && this.roomID) {
+        //     this.reLogin();
+        // }
         this._zg = zg // _zg不监听，监听会报错
         // 刷新全局变量
         zegoAppID = getApp().globalData.zegoAppID;
@@ -110,9 +110,7 @@ export default {
             this.livePlayerList.push(reslult)
         },
         audiovolumenotify(e) {
-            console.log('===========')
-            console.error(e)
-            console.log(new Date())
+            // console.log("audiovolumenotify", e.detail.volume)
         },
         datachange(e) {
             console.log(e)
