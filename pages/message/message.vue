@@ -10,7 +10,7 @@
                     @netstatus="onPlayNetStateChange"></live-player>
             </view>
             <scroll-view class="message-view" scroll-y="true" :scroll-into-view="scrollToView">
-                <view class="message-item" v-for="item in messageList" :key="indeitem.ID" :id="item.ID">
+                <view class="message-item" v-for="item in messageList" :key="item.ID" :id="item.ID">
                     <view>
                         <span>{{ item.name }}:</span>
                         {{ item.content }}
