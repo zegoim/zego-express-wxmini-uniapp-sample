@@ -34,7 +34,7 @@ export default {
         this.onNetworkStatus();
     },
     async mounted() {
-        let {  token, userID} = getApp().globalData
+        let { token, userID } = getApp().globalData
         this.token = token;
         this.userID = userID
     },
@@ -58,7 +58,7 @@ export default {
                 }, {
                     userUpdate: true // 是否接收用户进出房间的回调，设置为 true 才能接收到房间内其他用户进出房间的回调
                 });
-                this.connectType = 1
+                if (result) this.connectType = 1
             }
             this.role = role
             if (role === 1) {
